@@ -4,6 +4,7 @@ import co.istad.mobilebanking.domain.Role;
 import co.istad.mobilebanking.domain.User;
 import co.istad.mobilebanking.feature.role.RoleRepository;
 import co.istad.mobilebanking.feature.user.dto.CreateUserRequest;
+import co.istad.mobilebanking.feature.user.dto.UpdateUserRequest;
 import co.istad.mobilebanking.feature.user.dto.UserResponse;
 import co.istad.mobilebanking.mapper.UserMapper;
 import co.istad.mobilebanking.util.ValidatePhoneNumberUtil;
@@ -93,6 +94,30 @@ public class UserServiceImpl implements UserService{
     public UserResponse findUserByEmail(String email) {
 
         User user=userRepository.findByEmail(email).orElseThrow();
+        return userMapper.toUserResponse(user);
+    }
+
+    @Override
+    public UserResponse deleteUserByPhoneNumber(String phoneNumber) {
+
+        User user=userRepository.findByPhoneNumber(phoneNumber)
+                .orElseThrow();
+        user.setIsDeleted(true);
+
+        userRepository.save(user);
+
+        return userMapper.toUserResponse(user);
+    }
+
+    @Override
+    public UserResponse updateUserName(UpdateUserRequest updateUserRequest) {
+
+        User user=userRepository
+                .findByPhoneNumber(updateUserRequest.phoneNumber())
+                .orElseThrow();
+        user.setName(updateUserRequest.name());
+        userRepository.save(user);
+
         return userMapper.toUserResponse(user);
     }
 }

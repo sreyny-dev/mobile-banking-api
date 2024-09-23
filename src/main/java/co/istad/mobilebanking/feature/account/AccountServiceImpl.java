@@ -7,6 +7,7 @@ import co.istad.mobilebanking.domain.UserAccount;
 import co.istad.mobilebanking.feature.accounType.AccountTypeRepository;
 import co.istad.mobilebanking.feature.account.dto.AccountResponse;
 import co.istad.mobilebanking.feature.account.dto.CreateAccountRequest;
+import co.istad.mobilebanking.feature.account.dto.UpdateAccountRequest;
 import co.istad.mobilebanking.feature.user.UserRepository;
 import co.istad.mobilebanking.mapper.AccountMapper;
 import lombok.RequiredArgsConstructor;
@@ -95,5 +96,42 @@ public class AccountServiceImpl implements AccountService{
             );
         }
         return accountMapper.toAccountResponseList(accounts);
+    }
+
+    @Override
+    public AccountResponse updateAccountAlias(UpdateAccountRequest updateAccountRequest) {
+
+        Account account=accountRepository
+                .findByActNo(updateAccountRequest.actNo())
+                .orElseThrow();
+        account.setAlias(updateAccountRequest.alias());
+
+        accountRepository.save(account);
+        return accountMapper.toAccountResponse(account);
+    }
+
+    @Override
+    public AccountResponse hideAccount(String actNo) {
+
+        Account account=accountRepository
+                .findByActNo(actNo)
+                .orElseThrow();
+        account.setIsHidden(true);
+        accountRepository.save(account);
+
+        return accountMapper.toAccountResponse(account);
+    }
+
+    @Override
+    public AccountResponse deleteAccount(String actNo) {
+
+        Account account=accountRepository
+                .findByActNo(actNo)
+                .orElseThrow();
+        account.setIsDeleted(true);
+
+        accountRepository.save(account);
+
+        return accountMapper.toAccountResponse(account);
     }
 }

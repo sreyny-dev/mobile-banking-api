@@ -9,4 +9,8 @@ public interface CardService {
 
     CardResponse createCard(CreateCardRequest createCardRequest);
     List<CardResponse> findAllCard();
+    CardResponse findCardByCardNumber(String cardNumber);
+    CardResponse frozenCard(String cardNumber);
+    CardResponse unfrozenCard(String cardNumber);
+    CardResponse deleteCard(String cardNumber);
 }

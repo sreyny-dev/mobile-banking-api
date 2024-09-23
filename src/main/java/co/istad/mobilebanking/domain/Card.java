@@ -28,6 +28,8 @@ public class Card {
     private String cardHolderName;
     @Column(nullable=false)
     private Boolean isDeleted;
+    @Column(nullable=false)
+    private Boolean isFrozen;
 
     @ManyToOne
     private CardType cardType;

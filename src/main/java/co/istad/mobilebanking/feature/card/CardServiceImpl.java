@@ -62,6 +62,7 @@ public class CardServiceImpl implements CardService {
         card.setIssuedDate(LocalDate.now());
         card.setExpiryDate(LocalDate.now().plusYears(2));
         card.setIsDeleted(false);
+        card.setIsFrozen(false);
 
         cardRepository.save(card);
 
@@ -75,4 +76,52 @@ public class CardServiceImpl implements CardService {
 
         return cardMapper.toCardResponseList(cards);
     }
+
+    @Override
+    public CardResponse findCardByCardNumber(String cardNumber) {
+
+        Card card=cardRepository
+                .findByCardNumber(cardNumber)
+                .orElseThrow();
+
+        return cardMapper.toCardResponse(card);
+    }
+
+    @Override
+    public CardResponse frozenCard(String cardNumber) {
+
+        Card card=cardRepository
+                .findByCardNumber(cardNumber)
+                .orElseThrow();
+
+        card.setIsFrozen(true);
+        cardRepository.save(card);
+
+        return cardMapper.toCardResponse(card);
+    }
+
+    @Override
+    public CardResponse unfrozenCard(String cardNumber) {
+        Card card=cardRepository
+                .findByCardNumber(cardNumber)
+                .orElseThrow();
+
+        card.setIsFrozen(false);
+        cardRepository.save(card);
+
+        return cardMapper.toCardResponse(card);
+    }
+
+    @Override
+    public CardResponse deleteCard(String cardNumber) {
+
+        Card card=cardRepository
+                .findByCardNumber(cardNumber)
+                .orElseThrow();
+        card.setIsDeleted(true);
+        cardRepository.save(card);
+        return cardMapper.toCardResponse(card);
+    }
+
+
 }

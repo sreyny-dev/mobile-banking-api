@@ -5,7 +5,8 @@ public record UserResponse(
         String gender,
         String dob,
         String email,
-        String phoneNumber
+        String phoneNumber,
+        Boolean isDeleted
 
 ) {
 }

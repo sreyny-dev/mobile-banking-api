@@ -2,6 +2,7 @@ package co.istad.mobilebanking.feature.account;
 
 import co.istad.mobilebanking.feature.account.dto.AccountResponse;
 import co.istad.mobilebanking.feature.account.dto.CreateAccountRequest;
+import co.istad.mobilebanking.feature.account.dto.UpdateAccountRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,6 +36,21 @@ public class AccountController {
     @GetMapping("phoneNumber/{phoneNumber}")
     List<AccountResponse> findAccountByPhoneNumber(@PathVariable String phoneNumber){
         return accountService.findAccountByPhoneNumber(phoneNumber);
+    }
+
+    @PutMapping("/update-alias")
+    AccountResponse updateAccountAlias(@Valid @RequestBody UpdateAccountRequest updateAccountRequest){
+        return accountService.updateAccountAlias(updateAccountRequest);
+    }
+
+    @PutMapping("/hide-account/{actNo}")
+    AccountResponse hideAccount(@PathVariable String actNo){
+        return accountService.hideAccount(actNo);
+    }
+
+    @DeleteMapping("/delete-account/{actNo}")
+    AccountResponse deleteAccount(@PathVariable String actNo){
+        return accountService.deleteAccount(actNo);
     }
 
 }
