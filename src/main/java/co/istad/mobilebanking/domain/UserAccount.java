@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @Setter
@@ -25,7 +24,7 @@ public class UserAccount {
     @ManyToOne
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade=CascadeType.PERSIST)
     private Account account;
 
 }

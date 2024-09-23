@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Setter
@@ -29,11 +30,14 @@ public class Account {
     private Boolean isHidden;
     @Column(nullable = false)
     private Boolean isDeleted;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
     @ManyToOne
     private AccountType accountType;
 
-    @OneToOne(mappedBy = "account")
+//    @OneToOne(mappedBy = "account")
+    @OneToOne(cascade = CascadeType.PERSIST)
     private UserAccount userAccount;
 
     @OneToMany(mappedBy = "sender")

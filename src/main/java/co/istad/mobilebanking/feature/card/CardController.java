@@ -1,2 +1,4 @@
-package co.istad.mobilebanking.feature.card;public class CardController {
+package co.istad.mobilebanking.feature.card;
+
+public class CardController {
 }

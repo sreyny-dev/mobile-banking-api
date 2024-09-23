@@ -40,15 +40,15 @@ public class ApiException {
                 .build();
     }
 
-    //return one error
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-//        ErrorDetailResponse<?> errorDetailResponse = ErrorDetailResponse.builder()
-//                .code(e.getStatusCode().toString())
-//                .description(e.getBindingResult().getFieldError().getDefaultMessage())
-//                .build();
-//        return new ResponseEntity<>(ErrorResponse.builder()
-//                .error(errorDetailResponse)
-//                .build(), e.getStatusCode());
-//    }
+    //return one error of reponse status exception
+    @ExceptionHandler(ResponseStatusException.class)
+    ResponseEntity<?> handleResponseStatusException(ResponseStatusException e) {
+        ErrorDetailResponse<?> errorDetailResponse = ErrorDetailResponse.builder()
+                .code(e.getStatusCode().toString())
+                .description(e.getReason())
+                .build();
+        return new ResponseEntity<>(ErrorResponse.builder()
+                .error(errorDetailResponse)
+                .build(), e.getStatusCode());
+    }
 }

@@ -1,13 +1,17 @@
 package co.istad.mobilebanking.init;
 
-import co.istad.mobilebanking.domain.Role;
-import co.istad.mobilebanking.domain.User;
+import co.istad.mobilebanking.domain.*;
+import co.istad.mobilebanking.feature.accounType.AccountTypeRepository;
+import co.istad.mobilebanking.feature.account.AccountRepository;
+import co.istad.mobilebanking.feature.account.UserAccountRepository;
+import co.istad.mobilebanking.feature.card.CardTypeRepository;
 import co.istad.mobilebanking.feature.role.RoleRepository;
 import co.istad.mobilebanking.feature.user.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,12 +22,104 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class DataInit {
     private final RoleRepository roleRepository;
+    private final AccountRepository accountRepository;
     private final UserRepository userRepository;
+    private final AccountTypeRepository accountTypeRepository;
+    private final UserAccountRepository userAccountRepository;
+    private final CardTypeRepository cardTypeRepository;
 
     @PostConstruct
     void init(){
         initRoleData();
+        initCardType();
+        initAccountType();
         initUser();
+        initAccount();
+    }
+
+
+    private void initCardType(){
+        CardType master=new CardType();
+        master.setName("master card");
+        master.setAlias("master-card");
+        master.setIsDeleted(false);
+
+        CardType visa=new CardType();
+        visa.setName("visa card");
+        visa.setAlias("visa-card");
+        visa.setIsDeleted(false);
+
+        cardTypeRepository.saveAll(List.of(master, visa));
+
+    }
+
+    private void initAccount(){
+
+        User user1 = userRepository.findByPhoneNumber("0964335400").orElseThrow();
+        UserAccount userAccount1 = new UserAccount();
+        userAccount1.setUser(user1);
+        userAccount1.setCreatedAt(LocalDateTime.now());
+        userAccount1.setIsBlocked(false);
+        userAccount1.setIsDeleted(false);
+
+        Account a1=new Account();
+        a1.setActNo("000111222");
+        a1.setAlias("nyny-saving-account");
+        a1.setAccountType(accountTypeRepository.findByAlias("saving-account").orElseThrow());
+        a1.setTransferLimit(BigDecimal.valueOf(5000));
+        a1.setBalance(BigDecimal.valueOf(500));
+        a1.setUserAccount(userAccount1);
+        a1.setCreatedAt(LocalDateTime.now());
+        a1.setIsHidden(false);
+        a1.setIsDeleted(false);
+
+        userAccount1.setAccount(a1);
+
+
+        User user2 = userRepository.findByPhoneNumber("0972444000").orElseThrow();
+        UserAccount userAccount2 = new UserAccount();
+        userAccount2.setUser(user2);
+        userAccount2.setCreatedAt(LocalDateTime.now());
+        userAccount2.setIsBlocked(false);
+        userAccount2.setIsDeleted(false);
+
+        Account a2=new Account();
+        a2.setActNo("000674000");
+        a2.setAlias("dara-payroll-account");
+        a2.setAccountType(accountTypeRepository.findByAlias("payroll-account").orElseThrow());
+        a2.setTransferLimit(BigDecimal.valueOf(5000));
+        a2.setBalance(BigDecimal.valueOf(1000));
+        a2.setUserAccount(userAccount2);
+        a2.setIsHidden(false);
+        a2.setIsDeleted(false);
+        a2.setCreatedAt(LocalDateTime.now());
+
+        userAccount2.setAccount(a2);
+
+        accountRepository.saveAll(List.of(a1, a2));
+        userAccountRepository.saveAll(List.of(userAccount1, userAccount2));
+
+    }
+    private void initAccountType(){
+        AccountType t1=new AccountType();
+        t1.setName("saving account");
+        t1.setAlias("saving-account");
+        t1.setIsDeleted(false);
+        AccountType t2=new AccountType();
+        t2.setName("payroll account");
+        t2.setAlias("payroll-account");
+        t2.setIsDeleted(false);
+        AccountType t3=new AccountType();
+        t3.setName("current account");
+        t3.setAlias("current-account");
+        t3.setIsDeleted(false);
+        AccountType t4=new AccountType();
+        t4.setName("fix deposit account");
+        t4.setAlias("fix-deposit-account");
+        t4.setIsDeleted(false);
+
+        accountTypeRepository.saveAll(List.of(t1,t2,t3,t4));
+
     }
     private void initRoleData(){
         ArrayList<Role> roles=new ArrayList<>();
@@ -59,7 +155,27 @@ public class DataInit {
         u1.setIsBlocked(false);
         u1.setIsVerified(true);
 
-        userRepository.save(u1);
+        User u2=new User();
+        u2.setUuid(UUID.randomUUID().toString());
+        u2.setName("Sreyny");
+        u2.setPhoneNumber("0964335400");
+        u2.setEmail("thasreyny9@gmail.com");
+        u2.setPassword("444444");
+        u2.setDob(LocalDate.ofEpochDay(2000-10-21));
+        u2.setConfirmPassword("4444444");
+        u2.setPin("3333");
+        u2.setGender("Female");
+        u2.setCreatedAt(LocalDateTime.now());
+        u2.setRoles(roles);
+
+        u2.setIsAccountNonExpired(true);
+        u2.setIsAccountNonLocked(true);
+        u2.setIsCredentialsNonExpired(true);
+        u2.setIsDeleted(false);
+        u2.setIsBlocked(false);
+        u2.setIsVerified(true);
+
+        userRepository.saveAll(List.of(u1,u2));
     }
 
 }
