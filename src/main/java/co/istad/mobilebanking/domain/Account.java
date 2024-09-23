@@ -43,6 +43,7 @@ public class Account {
     @OneToMany(mappedBy = "sender")
     private List<Transaction> transactions;
 
-
+    @OneToOne
+    private Card card;
 
 }

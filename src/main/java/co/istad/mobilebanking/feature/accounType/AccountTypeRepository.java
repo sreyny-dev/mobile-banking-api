@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface AccountTypeRepository extends CrudRepository<AccountType, Integer> {
 
     Optional<AccountType> findByAlias(String alias);
+    Boolean existsByAlias(String alias);
 }

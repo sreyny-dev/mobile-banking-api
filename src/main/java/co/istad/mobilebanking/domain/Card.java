@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -17,9 +19,9 @@ public class Card {
     @Column(nullable=false, unique=true, length=16)
     private String cardNumber;
     @Column(nullable=false)
-    private String issuedDate;
+    private LocalDate issuedDate;
     @Column(nullable=false)
-    private String expiryDate;
+    private LocalDate expiryDate;
     @Column(nullable=false)
     private String cvv;
     @Column(nullable=false)
@@ -29,6 +31,9 @@ public class Card {
 
     @ManyToOne
     private CardType cardType;
+
+    @OneToOne
+    private Account account;
 
 
 }

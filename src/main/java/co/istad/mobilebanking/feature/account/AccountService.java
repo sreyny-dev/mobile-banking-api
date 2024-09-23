@@ -9,5 +9,7 @@ public interface AccountService {
 
     AccountResponse createAccount(CreateAccountRequest createAccountRequest);
     List<AccountResponse> findAllAccount();
+    AccountResponse findAccountByActNo(String actNo);
+    List<AccountResponse> findAccountByPhoneNumber(String phoneNumber);
 
 }
