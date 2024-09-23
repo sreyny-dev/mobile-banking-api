@@ -1,0 +1,14 @@
+services:
+  m-banking-db:
+    image: postgres:16.3-bullseye
+    container_name: m-banking-db
+    ports:
+      - 7777:5432
+    environment:
+      POSTGRES_PASSWORD: sbc11@2024
+      POSTGRES_USER: sbc11
+      POSTGRES_DB: m_banking_db
+    volumes:
+      - m-banking-vol:/var/lib/postgresql/data
+volumes:
+  m-banking-vol:
