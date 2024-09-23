@@ -26,9 +26,13 @@ public class UserController {
     List<UserResponse> findAllUser(){
         return userService.findAllUser();
     }
-    @GetMapping("/{id}")
+    @GetMapping("/userId/{id}")
     UserResponse findUserById(@PathVariable Integer id){
         return userService.findUserById(id);
+    }
+    @GetMapping("/email/{email}")
+    UserResponse findUserByEmail(@PathVariable String email){
+        return userService.findUserByEmail(email);
     }
 
 }

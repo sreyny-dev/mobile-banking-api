@@ -9,4 +9,5 @@ public interface UserService {
     void createUser(CreateUserRequest createUserRequest);
     List<UserResponse> findAllUser();
     UserResponse findUserById(Integer id);
+    UserResponse findUserByEmail(String email);
 }

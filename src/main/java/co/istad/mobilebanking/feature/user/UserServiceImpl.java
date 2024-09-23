@@ -88,4 +88,11 @@ public class UserServiceImpl implements UserService{
         User user=userRepository.findById(id).orElseThrow();
         return userMapper.toUserResponse(user);
     }
+
+    @Override
+    public UserResponse findUserByEmail(String email) {
+
+        User user=userRepository.findByEmail(email).orElseThrow();
+        return userMapper.toUserResponse(user);
+    }
 }
