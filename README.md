@@ -82,6 +82,7 @@ Welcome to the Mobile Banking API! This project provides a robust API for managi
 - JDK 21
 - Gradle
 - PostgreSQL
+- docker for database server and deployment on local and cloud
 
 ### Installation
 
