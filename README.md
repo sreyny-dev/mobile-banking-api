@@ -44,10 +44,10 @@ Welcome to the Mobile Banking API! This project provides a robust API for managi
   - `GET /api/v1/cards/cardNumber/{cardNumber}`
   
 - **Freeze Card**
-  - `PUT /api/v1/cards/frozen-card/{cardNumber}`
+  - `PUT /api/v1/cards/freeze-card/{cardNumber}`
   
 - **Unfreeze Card**
-  - `PUT /api/v1/cards/unfrozen-card/{cardNumber}`
+  - `PUT /api/v1/cards/unfreeze-card/{cardNumber}`
   
 - **Delete Card**
   - `DELETE /api/v1/cards/delete-card/{cardNumber}`
