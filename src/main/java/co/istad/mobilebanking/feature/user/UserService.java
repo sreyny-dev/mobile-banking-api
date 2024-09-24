@@ -1,8 +1,6 @@
 package co.istad.mobilebanking.feature.user;
 
-import co.istad.mobilebanking.feature.user.dto.CreateUserRequest;
-import co.istad.mobilebanking.feature.user.dto.UpdateUserRequest;
-import co.istad.mobilebanking.feature.user.dto.UserResponse;
+import co.istad.mobilebanking.feature.user.dto.*;
 
 import java.util.List;
 
@@ -13,4 +11,8 @@ public interface UserService {
     UserResponse findUserByEmail(String email);
     UserResponse deleteUserByPhoneNumber(String PhoneNumber);
     UserResponse updateUserName(UpdateUserRequest updateUserRequest);
+    UserResponse changePassword(ChangePasswordRequest changePasswordRequest);
+    UserResponse changePin(ChangePinRequest changePinRequest);
+    //Only Admin/Manager can change pin
+
 }

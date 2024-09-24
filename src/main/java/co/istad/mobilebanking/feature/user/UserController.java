@@ -1,8 +1,6 @@
 package co.istad.mobilebanking.feature.user;
 
-import co.istad.mobilebanking.feature.user.dto.CreateUserRequest;
-import co.istad.mobilebanking.feature.user.dto.UpdateUserRequest;
-import co.istad.mobilebanking.feature.user.dto.UserResponse;
+import co.istad.mobilebanking.feature.user.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -47,6 +45,16 @@ public class UserController {
     @PutMapping("/update-name")
     UserResponse updateUserName(@Valid @RequestBody UpdateUserRequest updateUserRequest){
         return userService.updateUserName(updateUserRequest);
+    }
+
+    @PutMapping("/change-password")
+    UserResponse changePassword(@Valid @RequestBody ChangePasswordRequest changePasswordRequest){
+        return userService.changePassword(changePasswordRequest);
+    }
+
+    @PutMapping("/change-pin")
+    UserResponse changePin(@Valid @RequestBody ChangePinRequest changePinRequest){
+        return userService.changePin(changePinRequest);
     }
 
 

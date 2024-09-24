@@ -3,9 +3,7 @@ package co.istad.mobilebanking.feature.user;
 import co.istad.mobilebanking.domain.Role;
 import co.istad.mobilebanking.domain.User;
 import co.istad.mobilebanking.feature.role.RoleRepository;
-import co.istad.mobilebanking.feature.user.dto.CreateUserRequest;
-import co.istad.mobilebanking.feature.user.dto.UpdateUserRequest;
-import co.istad.mobilebanking.feature.user.dto.UserResponse;
+import co.istad.mobilebanking.feature.user.dto.*;
 import co.istad.mobilebanking.mapper.UserMapper;
 import co.istad.mobilebanking.util.ValidatePhoneNumberUtil;
 import lombok.RequiredArgsConstructor;
@@ -116,6 +114,58 @@ public class UserServiceImpl implements UserService{
                 .findByPhoneNumber(updateUserRequest.phoneNumber())
                 .orElseThrow();
         user.setName(updateUserRequest.name());
+        userRepository.save(user);
+
+        return userMapper.toUserResponse(user);
+    }
+
+    @Override
+    public UserResponse changePassword(ChangePasswordRequest changePasswordRequest) {
+
+        //validate phone number
+        if(!userRepository.existsByPhoneNumber(changePasswordRequest.phoneNumber())){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist");
+        }
+
+        //validate new and confirm new password
+        if(!changePasswordRequest.newPassword().equals(changePasswordRequest.confirmNewPassword())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New Password and its confirm password does not match!");
+        }
+        User user=userRepository
+                .findByPhoneNumber(changePasswordRequest.phoneNumber())
+                .orElseThrow();
+
+        if(changePasswordRequest.newPassword().equals(user.getPassword())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New Password and its old password are the same!");
+        }
+
+        //validate input password and old password
+        if(changePasswordRequest.oldPassword().equals(user.getPassword())){
+            user.setPassword(changePasswordRequest.newPassword());
+
+        }
+        userRepository.save(user);
+
+        return userMapper.toUserResponse(user);
+    }
+
+    @Override
+    public UserResponse changePin(ChangePinRequest changePinRequest) {
+        //validate phone number
+        if(!userRepository.existsByPhoneNumber(changePinRequest.phoneNumber())){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User does not exist");
+        }
+
+        User user=userRepository
+                .findByPhoneNumber(changePinRequest.phoneNumber())
+                .orElseThrow();
+
+        if(user.getPin().equals(changePinRequest.newPin())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New Pin and its old Pin are the same!");
+        }
+
+        user.setPin(changePinRequest.newPin());
+
         userRepository.save(user);
 
         return userMapper.toUserResponse(user);
