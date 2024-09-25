@@ -32,14 +32,14 @@ public class CardController {
         return cardService.findCardByCardNumber(cardNumber);
     }
 
-    @PutMapping("/frozen-card/{cardNumber}")
-    CardResponse frozenCard(@PathVariable String cardNumber){
-        return cardService.frozenCard(cardNumber);
+    @PutMapping("/freeze-card/{cardNumber}")
+    CardResponse freezeCard(@PathVariable String cardNumber){
+        return cardService.freezeCard(cardNumber);
     }
 
-    @PutMapping("/unfrozen-card/{cardNumber}")
-    CardResponse unfrozenCard(@PathVariable String cardNumber){
-        return cardService.unfrozenCard(cardNumber);
+    @PutMapping("/unfreeze-card/{cardNumber}")
+    CardResponse unfreezeCard(@PathVariable String cardNumber){
+        return cardService.unfreezeCard(cardNumber);
     }
 
     @DeleteMapping("/delete-card/{cardNumber}")

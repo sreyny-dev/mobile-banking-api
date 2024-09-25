@@ -88,7 +88,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public CardResponse frozenCard(String cardNumber) {
+    public CardResponse freezeCard(String cardNumber) {
 
         Card card=cardRepository
                 .findByCardNumber(cardNumber)
@@ -101,7 +101,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public CardResponse unfrozenCard(String cardNumber) {
+    public CardResponse unfreezeCard(String cardNumber) {
         Card card=cardRepository
                 .findByCardNumber(cardNumber)
                 .orElseThrow();

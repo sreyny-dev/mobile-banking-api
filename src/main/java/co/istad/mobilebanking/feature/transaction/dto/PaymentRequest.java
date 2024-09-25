@@ -1,2 +1,4 @@
-package co.istad.mobilebanking.feature.transaction.dto;public record PaymentRequest() {
+package co.istad.mobilebanking.feature.transaction.dto;
+
+public record PaymentRequest() {
 }

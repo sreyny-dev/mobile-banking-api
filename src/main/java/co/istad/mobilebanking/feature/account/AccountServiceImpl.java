@@ -59,9 +59,10 @@ public class AccountServiceImpl implements AccountService{
         account.setIsDeleted(false);
 
         //create userAccount out of account
-
         //find user
-        User user=userRepository.findByPhoneNumber(createAccountRequest.phoneNumber()).orElseThrow();
+        User user=userRepository
+                .findByPhoneNumber(createAccountRequest.phoneNumber())
+                .orElseThrow();
 
         UserAccount userAccount=new UserAccount();
         userAccount.setAccount(account);
@@ -69,6 +70,8 @@ public class AccountServiceImpl implements AccountService{
         userAccount.setCreatedAt(LocalDateTime.now());
         userAccount.setIsBlocked(false);
         userAccount.setIsDeleted(false);
+
+        account.setUserAccount(userAccount);
 
         userAccountRepository.save(userAccount);
         return accountMapper.toAccountResponse(account);
