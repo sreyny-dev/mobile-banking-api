@@ -74,6 +74,7 @@ public class AccountServiceImpl implements AccountService{
         account.setUserAccount(userAccount);
 
         userAccountRepository.save(userAccount);
+
         return accountMapper.toAccountResponse(account);
     }
 

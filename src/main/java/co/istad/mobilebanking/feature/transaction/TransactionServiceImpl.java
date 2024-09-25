@@ -1,6 +1,7 @@
 package co.istad.mobilebanking.feature.transaction;
 
 
+import co.istad.mobilebanking.base.TransactionType;
 import co.istad.mobilebanking.domain.Account;
 import co.istad.mobilebanking.domain.Transaction;
 import co.istad.mobilebanking.feature.account.AccountRepository;
@@ -58,11 +59,11 @@ public class TransactionServiceImpl implements TransactionService  {
         transfer.setTransactionAt(LocalDateTime.now());
         transfer.setIsDeleted(false);
         transfer.setStatus(true);
-        transfer.setTransactionType("transfer");
+        transfer.setTransactionType(TransactionType.TRANSFER.toString());
+
 
         transfer.setSender(sender);
         transfer.setReceiver(receiver);
-
 
         accountRepository.save(sender);
         accountRepository.save(receiver);
