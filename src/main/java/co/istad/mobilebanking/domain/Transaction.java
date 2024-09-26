@@ -36,4 +36,11 @@ public class Transaction {
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Account receiver;
 
+    //for top up
+    private String phoneNumber;
+
+    //for education payment
+    private String studentId;
+
+
 }
