@@ -1,11 +1,14 @@
 package co.istad.mobilebanking.feature.transaction;
 
-
 import co.istad.mobilebanking.base.TransactionType;
 import co.istad.mobilebanking.domain.Account;
+import co.istad.mobilebanking.domain.Favorite;
 import co.istad.mobilebanking.domain.Transaction;
 import co.istad.mobilebanking.feature.account.AccountRepository;
+import co.istad.mobilebanking.feature.account.UserAccountRepository;
+import co.istad.mobilebanking.feature.favorite.FavoriteRepository;
 import co.istad.mobilebanking.feature.transaction.dto.*;
+import co.istad.mobilebanking.feature.user.UserRepository;
 import co.istad.mobilebanking.mapper.PaymentMapper;
 import co.istad.mobilebanking.mapper.TransferMapper;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -26,6 +30,10 @@ public class TransactionServiceImpl implements TransactionService  {
     private final AccountRepository accountRepository;
     private final TransferMapper transferMapper;
     private final PaymentMapper paymentMapper;
+    private final FavoriteRepository favoriteRepository;
+    private final UserAccountRepository userAccountRepository;
+    private final UserRepository userRepository;
+
     @Override
     public TransactionResponse transfer(TransactionRequest transactionRequest) {
 
@@ -63,6 +71,25 @@ public class TransactionServiceImpl implements TransactionService  {
         transfer.setTransactionType(TransactionType.TRANSFER.toString());
 
 
+        //add to favorite
+        if(transactionRequest.favorite()){
+            if(!favoriteRepository.existsByActNo(transactionRequest.receiverActNo())) {
+                Favorite fav = new Favorite();
+                fav.setName(receiver.getAlias());
+                fav.setActNo(receiver.getActNo());
+                fav.setIsDeleted(false);
+                fav.setCreatedAt(LocalDateTime.now());
+                fav.setAccounts(receiver);
+                fav.setFavoriteType(TransactionType.TRANSFER.toString());
+                fav.setUser(userRepository
+                        .findByUesrActNo(transactionRequest.senderActNo())
+                        .orElseThrow());
+
+                favoriteRepository.save(fav);
+            }
+        }
+
+
         transfer.setSender(sender);
         transfer.setReceiver(receiver);
 
@@ -91,8 +118,9 @@ public class TransactionServiceImpl implements TransactionService  {
 
 
 
-        if(!(account.getBalance().compareTo(topUpRequest.amount()) <0)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Amount does not has sufficient money.");
+        if((account.getBalance().compareTo(topUpRequest.amount()) <0)){
+            System.out.println(account.getBalance());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Account does not has sufficient money.");
 
         }else{
             account.setBalance(account.getBalance().subtract(topUpRequest.amount()));
@@ -104,6 +132,21 @@ public class TransactionServiceImpl implements TransactionService  {
         transaction.setStatus(true);
         transaction.setSender(account);
         transaction.setTransactionType(TransactionType.PAYMENT.name());
+
+
+        if(topUpRequest.favorite()){
+            if(!favoriteRepository.existsByPhoneNumber(topUpRequest.phoneNumber())) {
+
+                Favorite fav = new Favorite();
+                fav.setIsDeleted(false);
+                fav.setCreatedAt(LocalDateTime.now());
+                fav.setFavoriteType(TransactionType.PAYMENT.toString());
+                fav.setPhoneNumber(topUpRequest.phoneNumber());
+
+                favoriteRepository.save(fav);
+            }
+        }
+
 
         accountRepository.save(account);
         transactionRepository.save(transaction);
@@ -144,11 +187,44 @@ public class TransactionServiceImpl implements TransactionService  {
         educationPayment.setSender(sender);
         educationPayment.setReceiver(educationInstitute);
 
-        accountRepository.save(sender);
-        accountRepository.save(educationInstitute);
+        //add to favorite
+            if (educationPaymentRequest.favorite()) {
+                if(!favoriteRepository.existsByActNo(educationPaymentRequest.receiverActNo())) {
+                    Favorite fav = new Favorite();
+                    fav.setName(educationInstitute.getAlias());
+                    fav.setActNo(educationInstitute.getActNo());
+                    fav.setIsDeleted(false);
+                    fav.setCreatedAt(LocalDateTime.now());
+                    fav.setAccounts(educationInstitute);
+                    fav.setFavoriteType(TransactionType.TRANSFER.toString());
+                    fav.setUser(userRepository
+                            .findByUesrActNo(educationPaymentRequest.senderActNo())
+                            .orElseThrow());
+
+                    favoriteRepository.save(fav);
+                }
+            }
+
+
+//        accountRepository.save(sender);
+//        accountRepository.save(educationInstitute);
 
         transactionRepository.save(educationPayment);
 
         return paymentMapper.toTransactionResponse(educationPayment);
+    }
+
+    @Override
+    public List<TransactionResponse> getTransactions(String actNo) {
+
+        if(!accountRepository.existsByActNo(actNo)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account does not exist!");
+        }
+
+        Account account=accountRepository.findByActNo(actNo).orElseThrow();
+
+        List<Transaction> transactionList=transactionRepository.findAllByAccount(account);
+
+        return transferMapper.toTransactionResponseList(transactionList);
     }
 }

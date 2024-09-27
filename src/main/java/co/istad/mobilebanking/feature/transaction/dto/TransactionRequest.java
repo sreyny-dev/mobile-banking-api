@@ -14,6 +14,7 @@ public record TransactionRequest(
         @NotNull(message="amount is required!")
         @Positive
         BigDecimal amount,
-        String remark
+        String remark,
+        Boolean favorite
 ) {
 }

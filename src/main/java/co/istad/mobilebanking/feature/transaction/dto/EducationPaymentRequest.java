@@ -8,7 +8,8 @@ public record EducationPaymentRequest(
         //I assume each school has their own actNo
         String receiverActNo,
         String studentId,
-        BigDecimal amount
+        BigDecimal amount,
+        Boolean favorite
 
 ) {
 }

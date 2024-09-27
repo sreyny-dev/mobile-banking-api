@@ -5,7 +5,8 @@ import java.math.BigDecimal;
 public record TopUpRequest(
         String senderActNo,
         String phoneNumber,
-        BigDecimal amount
+        BigDecimal amount,
+        Boolean favorite
 
 ) {
 }

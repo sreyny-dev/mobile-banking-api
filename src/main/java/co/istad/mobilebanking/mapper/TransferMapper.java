@@ -6,6 +6,8 @@ import co.istad.mobilebanking.feature.transaction.dto.TransactionResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface TransferMapper {
 
@@ -14,5 +16,7 @@ public interface TransferMapper {
     @Mapping(source = "sender.actNo", target="senderActNo")
     @Mapping(source="receiver.actNo", target="receiverActNo")
     TransactionResponse toTransactionResponse(Transaction transaction);
+
+    List<TransactionResponse> toTransactionResponseList(List<Transaction> transaction);
 
 }

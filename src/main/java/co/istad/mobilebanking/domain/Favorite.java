@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
+
 
 @Setter
 @Getter
@@ -17,9 +17,8 @@ public class Favorite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(nullable = false)
+
     private String name;
-    @Column(nullable = false)
     private String actNo;
     @Column(nullable = false)
     private Boolean isDeleted;
@@ -27,6 +26,9 @@ public class Favorite {
     private String favoriteType; //transfer/payment
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    //topup fav
+    private String phoneNumber;
 
     @ManyToOne
     private Account accounts;

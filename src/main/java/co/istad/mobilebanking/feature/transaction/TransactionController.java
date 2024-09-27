@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/transactions")
@@ -31,6 +33,10 @@ public class TransactionController {
         return transactionService.educationPayment(educationPaymentRequest);
     }
 
+    @GetMapping("/account/{actNo}")
+    List<TransactionResponse> accountAllTransaction(@Valid @PathVariable String actNo){
+        return transactionService.getTransactions(actNo);
+    }
 
 
 }
