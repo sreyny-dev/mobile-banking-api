@@ -48,6 +48,10 @@ public class TransactionServiceImpl implements TransactionService  {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sender Account does not exist.");
         }
 
+        if(transactionRequest.senderActNo().equals(transactionRequest.receiverActNo())){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Both sender and receiver accounts are the same");
+        }
+
         Account sender = accountRepository
                 .findByActNo(transactionRequest.senderActNo())
                 .orElseThrow();
@@ -112,6 +116,7 @@ public class TransactionServiceImpl implements TransactionService  {
         }
 
 
+
         Account account=accountRepository
                 .findByActNo(topUpRequest.senderActNo())
                 .orElseThrow();
@@ -165,6 +170,10 @@ public class TransactionServiceImpl implements TransactionService  {
 
         if(!accountRepository.existsByActNo(educationPaymentRequest.receiverActNo())){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account does not exist!");
+        }
+
+        if(educationPaymentRequest.senderActNo().equals(educationPaymentRequest.receiverActNo())){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Both sender and receiver accounts are the same");
         }
 
         Account sender=accountRepository.findByActNo(educationPaymentRequest.senderActNo()).orElseThrow();
@@ -226,5 +235,64 @@ public class TransactionServiceImpl implements TransactionService  {
         List<Transaction> transactionList=transactionRepository.findAllByAccount(account);
 
         return transferMapper.toTransactionResponseList(transactionList);
+    }
+
+    @Override
+    public List<TransactionResponse> getAllTransactions() {
+
+        List<Transaction> transactionList=transactionRepository.findAll();
+
+        return transferMapper.toTransactionResponseList(transactionList);
+    }
+
+    @Override
+    public List<TransactionResponse> getTransactionsBetweenAccounts(String senderActNo, String receiverActNo) {
+
+        if(!accountRepository.existsByActNo(receiverActNo)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "receiver does not exist!");
+        }
+        if(!accountRepository.existsByActNo(senderActNo)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "sender does not exist!");
+        }
+
+
+        List<Transaction> transactionList=transactionRepository.findAllBetweenAccounts(senderActNo, receiverActNo);
+
+
+
+        return transferMapper.toTransactionResponseList(transactionList);
+    }
+
+    @Override
+    public List<TransactionResponse> getIncome(String actNo) {
+
+        if(!accountRepository.existsByActNo(actNo)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "account does not exist!");
+        }
+
+        List<Transaction> transactionList=transactionRepository.findIncome(actNo);
+
+        return transferMapper.toTransactionResponseList(transactionList);
+    }
+
+    @Override
+    public List<TransactionResponse> getExpense(String actNo) {
+        if(!accountRepository.existsByActNo(actNo)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "account does not exist!");
+        }
+
+        List<Transaction> transactionList=transactionRepository.findExpense(actNo);
+
+        return transferMapper.toTransactionResponseList(transactionList);
+    }
+
+    @Override
+    public void deleteTransactionById(Integer id) {
+        Transaction transaction=transactionRepository
+                .findById(id)
+                .orElseThrow();
+        transaction.setIsDeleted(true);
+        transactionRepository.save(transaction);
+
     }
 }

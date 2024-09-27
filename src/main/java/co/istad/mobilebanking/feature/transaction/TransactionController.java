@@ -38,5 +38,32 @@ public class TransactionController {
         return transactionService.getTransactions(actNo);
     }
 
+    @GetMapping()
+    List<TransactionResponse> findAllTransaction(){
+        return transactionService.getAllTransactions();
+    }
+
+    @GetMapping("/between-accounts/{senderActNo}/{receiverActNo}")
+    List<TransactionResponse> findAllBetweenAccount(@PathVariable String senderActNo, @PathVariable String receiverActNo){
+        return transactionService.getTransactionsBetweenAccounts(senderActNo, receiverActNo);
+    }
+
+
+    @GetMapping("/get-income/{actNo}")
+    List<TransactionResponse> findIncome(@PathVariable String actNo){
+        return transactionService.getIncome(actNo);
+    }
+
+    @GetMapping("/get-expense/{actNo}")
+    List<TransactionResponse> findExpense(@PathVariable String actNo){
+        return transactionService.getExpense(actNo);
+    }
+
+
+    @DeleteMapping("/id/{id}")
+    void deleteTransactionById(@PathVariable Integer id){
+         transactionService.deleteTransactionById(id);
+    }
+
 
 }
