@@ -9,6 +9,7 @@ import co.istad.mobilebanking.feature.role.RoleRepository;
 import co.istad.mobilebanking.feature.user.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -27,6 +28,7 @@ public class DataInit {
     private final AccountTypeRepository accountTypeRepository;
     private final UserAccountRepository userAccountRepository;
     private final CardTypeRepository cardTypeRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
     void init(){
@@ -125,8 +127,8 @@ public class DataInit {
         ArrayList<Role> roles=new ArrayList<>();
         roles.add(Role.builder().name("USER").build());
         roles.add(Role.builder().name("CLIENT").build());
-        roles.add(Role.builder().name("ADMIN").build());
         roles.add(Role.builder().name("STAFF").build());
+        roles.add(Role.builder().name("ADMIN").build());
         roles.add(Role.builder().name("MANAGER").build());
 
         roleRepository.saveAll(roles);
@@ -137,16 +139,17 @@ public class DataInit {
         u1.setName("Alice");
         u1.setPhoneNumber("0972444000");
         u1.setEmail("alice@gmail.com");
-        u1.setPassword("444444");
+        u1.setPassword(passwordEncoder.encode("1111"));
         u1.setDob(LocalDate.ofEpochDay(2000-10-21));
-        u1.setConfirmPassword("4444444");
+        u1.setConfirmPassword(passwordEncoder.encode("1111"));
         u1.setPin("3333");
         u1.setGender("Female");
         u1.setCreatedAt(LocalDateTime.now());
 
-        List<Role> roles=new ArrayList<>();
-        roles.add(roleRepository.findById(1).orElseThrow());
-        u1.setRoles(roles);
+        List<Role> roleU1=new ArrayList<>();
+        roleU1.add(roleRepository.findById(1).orElseThrow());
+        roleU1.add(roleRepository.findById(4).orElseThrow());
+        u1.setRoles(roleU1);
 
         u1.setIsAccountNonExpired(true);
         u1.setIsAccountNonLocked(true);
@@ -157,16 +160,19 @@ public class DataInit {
 
         User u2=new User();
         u2.setUuid(UUID.randomUUID().toString());
-        u2.setName("Sreyny");
+        u2.setName("sreyny");
         u2.setPhoneNumber("0964335400");
         u2.setEmail("thasreyny9@gmail.com");
-        u2.setPassword("444444");
+        u2.setPassword(passwordEncoder.encode("qwer"));
         u2.setDob(LocalDate.ofEpochDay(2000-10-21));
-        u2.setConfirmPassword("4444444");
+        u2.setConfirmPassword(passwordEncoder.encode("qwer"));
         u2.setPin("3333");
         u2.setGender("Female");
         u2.setCreatedAt(LocalDateTime.now());
-        u2.setRoles(roles);
+
+        List<Role> roleU2=new ArrayList<>();
+        roleU2.add(roleRepository.findById(1).orElseThrow());
+        u2.setRoles(roleU2);
 
         u2.setIsAccountNonExpired(true);
         u2.setIsAccountNonLocked(true);
@@ -175,7 +181,30 @@ public class DataInit {
         u2.setIsBlocked(false);
         u2.setIsVerified(true);
 
-        userRepository.saveAll(List.of(u1,u2));
+        User u3=new User();
+        u3.setUuid(UUID.randomUUID().toString());
+        u3.setName("THA SREYNY");
+        u3.setPhoneNumber("096223344");
+        u3.setEmail("sreyny@gmail.com");
+        u3.setPassword(passwordEncoder.encode("qwer"));
+        u3.setDob(LocalDate.ofEpochDay(2000-10-21));
+        u3.setConfirmPassword(passwordEncoder.encode("qwer"));
+        u3.setPin("3333");
+        u3.setGender("Female");
+        u3.setCreatedAt(LocalDateTime.now());
+        List<Role> roleU3=new ArrayList<>();
+        roleU3.add(roleRepository.findById(1).orElseThrow());
+        roleU3.add(roleRepository.findById(5).orElseThrow());
+        u3.setRoles(roleU3);
+
+        u3.setIsAccountNonExpired(true);
+        u3.setIsAccountNonLocked(true);
+        u3.setIsCredentialsNonExpired(true);
+        u3.setIsDeleted(false);
+        u3.setIsBlocked(false);
+        u3.setIsVerified(true);
+
+        userRepository.saveAll(List.of(u1,u2,u3));
     }
 
 }

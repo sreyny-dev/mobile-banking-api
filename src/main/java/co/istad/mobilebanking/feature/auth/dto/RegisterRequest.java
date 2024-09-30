@@ -12,7 +12,7 @@ public record RegisterRequest(
         String name,
         @NotBlank (message="gender is required")
         String gender,
-        @NotBlank (message="dob is required")
+        @NotNull (message="dob is required")
         LocalDate dob,
         @NotBlank (message="phone number is required")
         String phoneNumber,

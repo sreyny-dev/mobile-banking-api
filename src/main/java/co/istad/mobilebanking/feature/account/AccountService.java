@@ -15,4 +15,6 @@ public interface AccountService {
     AccountResponse updateAccountAlias(UpdateAccountRequest updateAccountRequest);
     AccountResponse hideAccount(String actNo);
     AccountResponse deleteAccount(String actNo);
+
+
 }
