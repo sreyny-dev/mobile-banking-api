@@ -88,7 +88,7 @@ Welcome to the Mobile Banking API! This project provides a robust API for managi
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/mobile-banking-api.git
+   git clone https://github.com/sreyny-dev/mobile-banking-api.git
 2. runt the project
 3. Test on post or on swagger
 4. swagger link
