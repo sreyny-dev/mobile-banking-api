@@ -1,96 +1,47 @@
-# Mobile Banking API
+# Project Overview
+This is a RESTful API built using Spring Boot, PostgreSQL, and Docker, deployed on Google Cloud. The API utilizes JWT for security and is tested using Postman and Swagger.
 
-## Introduction
+## Table of Contents
+- [Project Structure](#project-structure)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+- [API Documentation](#api-documentation)
+- [Security](#security)
 
-Welcome to the Mobile Banking API! This project provides a robust API for managing users, accounts, and cards in a mobile banking application. The API is designed to facilitate financial transactions securely and efficiently, ensuring a smooth user experience.
+## Project Structure
+The project is structured as follows:
+- **src/main/java**: Java source code
+- **src/main/resources**: Application configuration files
+- **Dockerfile**: Docker configuration file
+- **docker-compose.yml**: Docker Compose configuration file
+- **build.gradle**: Gradle build configuration file
 
-## Features
-
-- **User Management**: Create, update, retrieve, and delete user accounts.
-- **Account Management**: Manage user accounts, including updating aliases and hiding accounts.
-- **Card Management**: Handle card operations such as freezing and unfreezing cards.
-
-## API Endpoints
-
-### User Controller
-
-- **Create User**
-  - `POST /api/v1/users`
-  
-- **Get All Users**
-  - `GET /api/v1/users`
-  
-- **Get User by ID**
-  - `GET /api/v1/users/userId/{id}`
-  
-- **Get User by Email**
-  - `GET /api/v1/users/email/{email}`
-  
-- **Update User Name**
-  - `PUT /api/v1/users/update-name`
-  
-- **Delete User by Phone Number**
-  - `DELETE /api/v1/users/phoneNumber/{phoneNumber}`
-
-### Card Controller
-
-- **Create Card**
-  - `POST /api/v1/cards`
-  
-- **Get All Cards**
-  - `GET /api/v1/cards`
-  
-- **Get Card by Number**
-  - `GET /api/v1/cards/cardNumber/{cardNumber}`
-  
-- **Freeze Card**
-  - `PUT /api/v1/cards/freeze-card/{cardNumber}`
-  
-- **Unfreeze Card**
-  - `PUT /api/v1/cards/unfreeze-card/{cardNumber}`
-  
-- **Delete Card**
-  - `DELETE /api/v1/cards/delete-card/{cardNumber}`
-
-### Account Controller
-
-- **Create Account**
-  - `POST /api/v1/accounts`
-  
-- **Get All Accounts**
-  - `GET /api/v1/accounts`
-  
-- **Get Account by Number**
-  - `GET /api/v1/accounts/actNo/{actNo}`
-  
-- **Get Account by Phone Number**
-  - `GET /api/v1/accounts/phoneNumber/{phoneNumber}`
-  
-- **Update Account Alias**
-  - `PUT /api/v1/accounts/update-alias`
-  
-- **Hide Account**
-  - `PUT /api/v1/accounts/hide-account/{actNo}`
-  
-- **Delete Account**
-  - `DELETE /api/v1/accounts/delete-account/{actNo}`
+## Technologies Used
+- **Spring Boot**: Latest version
+- **PostgreSQL**: Database management system
+- **Docker**: Containerization platform
+- **Google Cloud**: Cloud platform for deployment
+- **JWT**: JSON Web Token for security
+- **Postman**: API testing tool
+- **Swagger**: API documentation tool
+- **JDK 21**: Java Development Kit
+- **Gradle**: Build tool
 
 ## Getting Started
-
-### Prerequisites
-
-- JDK 21
-- Gradle
-- PostgreSQL
-- docker for database server and deployment on local and cloud
-
-### Installation
-
 1. Clone the repository:
    ```bash
-   git clone https://github.com/sreyny-dev/mobile-banking-api.git
-2. runt the project
-3. Test on post or on swagger
-4. swagger link
+   git clone https://github.com/sreyny-dev/mobile-banking-api
+
+2. Build the project:
    ```bash
-   http://localhost:8080/swagger-ui/index.html
+   ./gradlew build
+3. Run the project:
+   ```bash
+   ./gradlew bootRun
+4. Access the API: http://localhost:8080/swagger-ui/index.html
+
+## API Documentation 
+The API documentation is available at http://localhost:8080/swagger-ui/index.html. This documentation provides information on available endpoints, request and response formats, and authentication mechanisms.
+
+## Security
+The API uses JWT for security. To access protected endpoints, you need to obtain a JWT token by sending a POST request to the /login endpoint with valid credentials.
