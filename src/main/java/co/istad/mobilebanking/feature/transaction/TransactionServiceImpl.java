@@ -31,7 +31,6 @@ public class TransactionServiceImpl implements TransactionService  {
     private final TransferMapper transferMapper;
     private final PaymentMapper paymentMapper;
     private final FavoriteRepository favoriteRepository;
-    private final UserAccountRepository userAccountRepository;
     private final UserRepository userRepository;
 
     @Override

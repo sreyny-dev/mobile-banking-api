@@ -36,6 +36,7 @@ public class User {
     private String gender;
     @Column(nullable=false)
     private LocalDate dob;
+    @Column(nullable=false)
     private String profilePicture;
 
     private String nationalCardId;

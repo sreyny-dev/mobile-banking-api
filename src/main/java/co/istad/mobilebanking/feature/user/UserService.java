@@ -23,4 +23,7 @@ public interface UserService {
     void sendResetPasswordEmail(User user, String token) throws MessagingException;
     void resetPassword(String token, String newPassword);
 
+    void blockedByPhoneNumber(String phoneNumber);
+
+
 }

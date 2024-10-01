@@ -37,6 +37,22 @@ public class UserServiceImpl implements UserService{
     @Value("${spring.mail.username}")
     private String adminMail;
 
+    @Value("${file-server.base-uri}")
+    private String baseUri;
+
+
+    @Override
+    public void blockedByPhoneNumber(String phoneNumber) {
+        if(!userRepository.existsByPhoneNumber(phoneNumber)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid phone number");
+        }
+        User user=userRepository.findByPhoneNumber(phoneNumber).orElseThrow();
+
+        user.setIsBlocked(true);
+        user.setIsDeleted(true);
+        userRepository.save(user);
+
+    }
 
     //CREATE User by admin or manager
     @Override
@@ -78,6 +94,8 @@ public class UserServiceImpl implements UserService{
         user.setUuid(UUID.randomUUID().toString());
         user.setRoles(roles);
         user.setCreatedAt(LocalDateTime.now());
+        user.setProfilePicture(baseUri+"default.png");
+
         user.setIsBlocked(false);
         user.setIsDeleted(false);
         user.setIsVerified(true);
@@ -228,6 +246,7 @@ public class UserServiceImpl implements UserService{
         user.setUuid(UUID.randomUUID().toString());
         user.setRoles(roles);
         user.setCreatedAt(LocalDateTime.now());
+        user.setProfilePicture(baseUri+"default.png");
         user.setIsBlocked(false);
         user.setIsDeleted(false);
         user.setIsVerified(true);
@@ -280,6 +299,7 @@ public class UserServiceImpl implements UserService{
         user.setUuid(UUID.randomUUID().toString());
         user.setRoles(roles);
         user.setCreatedAt(LocalDateTime.now());
+        user.setProfilePicture(baseUri+"default.png");
         user.setIsBlocked(false);
         user.setIsDeleted(false);
         user.setIsVerified(true);
@@ -339,11 +359,12 @@ public class UserServiceImpl implements UserService{
         }
 
         User user=resetToken.getUser();
-//        user.setPassword(newPassword);
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user);
 
         passwordResetTokenRepository.delete(resetToken);
 
     }
+
+
 }

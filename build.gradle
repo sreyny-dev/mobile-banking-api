@@ -44,11 +44,15 @@ dependencies {
     //Dependency for Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
 
+    //for basic security
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
 
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    //oath2 for jwt
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 
     //sending email
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 
 
 }

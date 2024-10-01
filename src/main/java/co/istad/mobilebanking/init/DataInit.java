@@ -9,6 +9,7 @@ import co.istad.mobilebanking.feature.role.RoleRepository;
 import co.istad.mobilebanking.feature.user.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +30,9 @@ public class DataInit {
     private final UserAccountRepository userAccountRepository;
     private final CardTypeRepository cardTypeRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${file-server.base-uri}")
+    private String baseUri;
 
     @PostConstruct
     void init(){
@@ -145,6 +149,7 @@ public class DataInit {
         u1.setPin("3333");
         u1.setGender("Female");
         u1.setCreatedAt(LocalDateTime.now());
+        u1.setProfilePicture(baseUri+"default.png");
 
         List<Role> roleU1=new ArrayList<>();
         roleU1.add(roleRepository.findById(1).orElseThrow());
@@ -169,9 +174,11 @@ public class DataInit {
         u2.setPin("3333");
         u2.setGender("Female");
         u2.setCreatedAt(LocalDateTime.now());
+        u2.setProfilePicture(baseUri+"default.png");
 
         List<Role> roleU2=new ArrayList<>();
         roleU2.add(roleRepository.findById(1).orElseThrow());
+        roleU2.add(roleRepository.findById(2).orElseThrow());
         u2.setRoles(roleU2);
 
         u2.setIsAccountNonExpired(true);
@@ -196,6 +203,7 @@ public class DataInit {
         roleU3.add(roleRepository.findById(1).orElseThrow());
         roleU3.add(roleRepository.findById(5).orElseThrow());
         u3.setRoles(roleU3);
+        u3.setProfilePicture(baseUri+"default.png");
 
         u3.setIsAccountNonExpired(true);
         u3.setIsAccountNonLocked(true);

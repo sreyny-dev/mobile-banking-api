@@ -1,7 +1,6 @@
 package co.istad.mobilebanking.feature.auth;
 
-import co.istad.mobilebanking.feature.auth.dto.RegisterRequest;
-import co.istad.mobilebanking.feature.auth.dto.VerifyRequest;
+import co.istad.mobilebanking.feature.auth.dto.*;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,4 +31,17 @@ public class AuthController {
     void resendCode(@PathVariable String email) throws MessagingException {
         authService.resendVerificationCode(email);
     }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/login")
+    JwtResponse login(@Valid @RequestBody LoginRequest loginRequest) {
+        return authService.login(loginRequest);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/refresh-token")
+    JwtResponse refreshToken(@Valid @RequestBody RefreshTokenRequest refreshTokenRequest) {
+        return authService.refreshToken(refreshTokenRequest);
+    }
+
 }
