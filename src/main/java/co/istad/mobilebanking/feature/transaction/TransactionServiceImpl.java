@@ -5,7 +5,6 @@ import co.istad.mobilebanking.domain.Account;
 import co.istad.mobilebanking.domain.Favorite;
 import co.istad.mobilebanking.domain.Transaction;
 import co.istad.mobilebanking.feature.account.AccountRepository;
-import co.istad.mobilebanking.feature.account.UserAccountRepository;
 import co.istad.mobilebanking.feature.favorite.FavoriteRepository;
 import co.istad.mobilebanking.feature.transaction.dto.*;
 import co.istad.mobilebanking.feature.user.UserRepository;

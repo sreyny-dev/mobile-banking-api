@@ -1,6 +1,7 @@
 package co.istad.mobilebanking.feature.favorite;
 
 import co.istad.mobilebanking.domain.Favorite;
+import co.istad.mobilebanking.feature.account.AccountRepository;
 import co.istad.mobilebanking.feature.favorite.dto.FavoriteResponse;
 import co.istad.mobilebanking.feature.favorite.dto.UpdateName;
 import co.istad.mobilebanking.feature.favorite.dto.UserFavoriteRequest;
@@ -20,6 +21,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     private final FavoriteRepository favoriteRepository;
     private final UserRepository userRepository;
     private final FavoriteMapper favoriteMapper;
+    private final AccountRepository accountRepository;
 
     @Override
     public void unFavoriteAccount(String actNo) {
@@ -58,6 +60,10 @@ public class FavoriteServiceImpl implements FavoriteService {
 
     @Override
     public FavoriteResponse updateNameFavorite(UpdateName updateName) {
+
+        if(!accountRepository.existsByActNo(updateName.actNo())){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Account does not exist");
+        }
 
         Favorite fav=favoriteRepository
                 .findByActNo(updateName.actNo())

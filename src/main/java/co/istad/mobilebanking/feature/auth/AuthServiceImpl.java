@@ -58,6 +58,8 @@ public class AuthServiceImpl implements AuthService {
     private final DaoAuthenticationProvider daoAuthenticationProvider;
     private final JwtEncoder accessTokenjwtEncoder;
 
+    @Value("${file-server.base-uri}")
+    private String baseUri;
 
     @Value("${spring.mail.username}")
     private String adminEmail;
@@ -225,6 +227,7 @@ public class AuthServiceImpl implements AuthService {
         user.setUuid(UUID.randomUUID().toString());
         user.setRoles(roles);
         user.setCreatedAt(LocalDateTime.now());
+        user.setProfilePicture(baseUri+"default.png");
         user.setIsBlocked(false);
         user.setIsDeleted(true);
         user.setIsVerified(false);
